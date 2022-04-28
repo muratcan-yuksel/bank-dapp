@@ -16,8 +16,12 @@ modifier valueRequired{
 }
 
 modifier ownerRequired{
-    require(msg.sender==BankOwner, "You must be the owner to set the name of the bank");
+    require(msg.sender==BankOwner, "You must be the owner to do this action");
         _;
+}
+modifier fundsRequired(uint256 _total){
+    require(_total <= customerBalance[msg.sender], "You have insufficent funds to withdraw");
+    _;
 }
 
 function depositMoney() public payable valueRequired {
@@ -27,6 +31,17 @@ function depositMoney() public payable valueRequired {
 function setBankName(string memory _name) external ownerRequired {
     bankName= _name;
 }
+function withdrawMoney(address payable _to, uint256 _total) public fundsRequired(_total) {
+    customerBalance[msg.sender] -= _total;
+    _to.transfer(_total);
+}
 
+function getCustomerBalance() external view returns(uint256){
+    return customerBalance[msg.sender];
+}
+
+function getBankBalance() public view ownerRequired  returns (uint256)  {
+    return address(this).balance;
+}
 
 }
