@@ -87,6 +87,36 @@ const App = () => {
     }
   };
 
+  const getBankOwnerHandler = async () => {
+    try {
+      if (window.ethereum) {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const bankContract = new ethers.Contract(
+          contractAddress,
+          contractABI,
+          signer
+        );
+        const owner = await bankContract.bankOwner();
+        setBankOwnerAddress(owner);
+        const [account]= await window.ethereum.request({method: 'eth_requestAccounts'});
+
+        if(owner.toLowerCase() === account.toLowerCase()){
+          setIsBankerOwner(true);
+        }
+
+      } else {
+        console.log("Ethereum object not found, install Metamask.");
+        setError("Please install a MetaMask wallet to use our bank.");
+      }
+      
+    } catch (error) {
+      console.log(error);
+    }
+      
+    }
+  }
+
   return <div>App</div>;
 };
 
