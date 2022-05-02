@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { ethers, utils } from "ethers";
 import abi from "./contracts/Bank.json";
-
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
 const App = () => {
   const [isWalletConnected, setIsWalletConnected] = useState(false);
   const [isBankerOwner, setIsBankerOwner] = useState(false);
@@ -210,7 +211,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <main className="main-container">
+      <main className="main-container d-flex flex-column justify-content-center align-items-center">
         <h2 className="headline">
           <span className="headline">Bank Contract Project</span> 💰
         </h2>
@@ -223,32 +224,32 @@ const App = () => {
               <p className="para">{currentBankName}</p>
             )}
           </div>
-          <div className="">
-            <form className="">
+          <div className="boxContainer ">
+            <form className="form d-flex flex-column">
               <input
                 type="text"
-                className=""
+                className="inputField"
                 onChange={handleInputChange}
                 name="deposit"
                 placeholder="0.0000 ETH"
                 value={inputValue.deposit}
               />
-              <button className="" onClick={depositMoneyHandler}>
+              <button className="formButton" onClick={depositMoneyHandler}>
                 Deposit Money In ETH
               </button>
             </form>
           </div>
-          <div className="">
-            <form className="">
+          <div className="boxContainer">
+            <form className="form d-flex flex-column">
               <input
                 type="text"
-                className=" "
+                className=" inputField"
                 onChange={handleInputChange}
                 name="withdraw"
                 placeholder="0.0000 ETH"
                 value={inputValue.withdraw}
               />
-              <button className="btn-purple" onClick={withDrawMoneyHandler}>
+              <button className="formButton" onClick={withDrawMoneyHandler}>
                 Withdraw Money In ETH
               </button>
             </form>
