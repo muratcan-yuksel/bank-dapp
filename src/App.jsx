@@ -31,7 +31,60 @@ const App = () => {
         console.log("Account Connected: ", account);
       } else setError("Please install a MetaMask wallet to use our bank.");
       console.log("No MetaMask detected");
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getBankName = async () => {
+    try {
+      if (window.ethereum) {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const bankContract = new ethers.Contract(
+          contractAddress,
+          contractABI,
+          signer
+        );
+
+        let bankName = await bankContract.bankName();
+        bankName = utils.parseBytes32String(bankName);
+        setCurrentBankName(bankName.toString());
+      } else {
+        console.log("Ethereum object not found, install Metamask.");
+        setError("Please install a MetaMask wallet to use our bank.");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const setBankNameHandler = async (event) => {
+    event.preventDefault();
+    try {
+      if (window.ethereum) {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const bankContract = new ethers.Contract(
+          contractAddress,
+          contractABI,
+          signer
+        );
+        const txn = await bankContract.setBankName(
+          utils.formatBytes32String(inputValue.bankName)
+        );
+        console.log("Setting Bank Name...");
+        //waits for the transaction to be complete
+        await txn.wait();
+        console.log("Bank Name Changed", tnx.hash);
+        await getBankName();
+      } else {
+        console.log("Ethereum object not found, install Metamask.");
+        setError("Please install a MetaMask wallet to use our bank.");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return <div>App</div>;
