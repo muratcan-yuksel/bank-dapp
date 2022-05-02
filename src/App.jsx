@@ -1,45 +1,40 @@
-import { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import { useState, useEffect } from "react";
+import { ethers, utils } from "ethers";
+import abi from "./contracts/Bank.json";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [isWalletConnected, setIsWalletConnected] = useState(false);
+  const [isBankerOwner, setIsBankerOwner] = useState(false);
+  const [inputValue, setInputValue] = useState({
+    withdraw: "",
+    deposit: "",
+    bankName: "",
+  });
+  const [bankOwnerAddress, setBankOwnerAddress] = useState(null);
+  const [customerTotalBalance, setCustomerTotalBalance] = useState(null);
+  const [currentBankName, setCurrentBankName] = useState(null);
+  const [customerAddress, setCustomerAddress] = useState(null);
+  const [error, setError] = useState(null);
 
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.jsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
-  )
-}
+  const contractAddress = "0xc859B3cdeFc99a7d56bCcE130979B81A07D02cfE";
+  const contractABI = abi.abi;
 
-export default App
+  const checkIfWalletIsConnected = async () => {
+    try {
+      if (window.ethereum) {
+        const accounts = await window.ethereum.request({
+          method: "eth_requestAccounts",
+        });
+        const account = accounts[0];
+        setIsWalletConnected(true);
+        setCustomerAddress(account);
+        console.log("Account Connected: ", account);
+      } else setError("Please install a MetaMask wallet to use our bank.");
+      console.log("No MetaMask detected");
+    } catch (error) {}
+  };
+
+  return <div>App</div>;
+};
+
+export default App;
