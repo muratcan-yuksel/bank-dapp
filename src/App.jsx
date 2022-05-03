@@ -176,7 +176,6 @@ const App = () => {
         );
         let myAddress = await signer.getAddress();
         console.log("provider signer...", myAddress);
-
         const txn = await bankContract.withdrawMoney(
           myAddress,
           ethers.utils.parseEther(inputValue.withdraw)
