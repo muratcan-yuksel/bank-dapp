@@ -163,7 +163,7 @@ const App = () => {
     }
   };
 
-  const withDrawMoneyHandler = async (event) => {
+  const withdrawMoneyHandler = async (event) => {
     try {
       event.preventDefault();
       if (window.ethereum) {
@@ -249,24 +249,24 @@ const App = () => {
                 placeholder="0.0000 ETH"
                 value={inputValue.withdraw}
               />
-              <button className="formButton" onClick={withDrawMoneyHandler}>
+              <button className="formButton" onClick={withdrawMoneyHandler}>
                 Withdraw Money In ETH
               </button>
             </form>
           </div>
-          <div className=" ">
+          <div className="para">
             <p>
               <span className=" ">Customer Balance: </span>
               {customerTotalBalance}
             </p>
           </div>
-          <div className=" ">
+          <div className="para">
             <p>
               <span className=" ">Bank Owner Address: </span>
               {bankOwnerAddress}
             </p>
           </div>
-          <div className=" ">
+          <div className="">
             {isWalletConnected && (
               <p>
                 <span className=" ">Your Wallet Address: </span>
